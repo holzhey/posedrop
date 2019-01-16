@@ -1,28 +1,56 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <Box class="box" id="b1" :onValueChange="{ x : change }"/>
+    <div class="zone" id="z1">TESTE TESTE TESTE TESTE</div>
+    <p v-if="over">HOVERED</p>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import posed from 'vue-pose';
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-    HelloWorld,
+    Box: posed.div({
+      draggable: true,
+    }),
+  },
+  data() {
+    return {
+      over: false,
+    };
+  },
+  methods: {
+    change(x) {
+      let e = document.getElementById('z1');
+      let b = document.getElementById('b1');
+      e = e.getBoundingClientRect();
+      b = b.getBoundingClientRect();
+      const eX = e.left;
+      const eX2 = e.right;
+      const bX = b.left + x;
+      const bX2 = bX + b.width;
+      console.log(eX, bX, eX2, bX2);
+      this.over = (bX >= eX && bX2 <= eX2);
+    },
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  display: flex;
+  height: 95vh;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  background: #54e365;
 }
 </style>
